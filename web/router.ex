@@ -16,7 +16,6 @@ defmodule ExVideo.Router do
   scope "/", ExVideo do
     pipe_through :browser # Use the default browser stack
 
-    resources "/videos", VideoController
     get "/", PageController, :index
   end
 

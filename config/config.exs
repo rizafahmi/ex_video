@@ -9,7 +9,7 @@ use Mix.Config
 config :ex_video, ExVideo.Endpoint,
   url: [host: "localhost"],
   root: Path.dirname(__DIR__),
-  secret_key_base: "P6fceV7gM8K9oEERuxfKdwwCGG356Vlo5hFMEjMsJRsVljCSwzaTDtKU3we1UrVw",
+  secret_key_base: "tR51ZcvhFe/gjn6dy0IWbHZ7HvoWas2Xd6P03FNNFhD6hcEx0+eVpLEYT53lCIBA",
   render_errors: [accepts: ~w(html json)],
   pubsub: [name: ExVideo.PubSub,
            adapter: Phoenix.PubSub.PG2]

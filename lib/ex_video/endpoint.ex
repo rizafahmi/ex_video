@@ -33,7 +33,7 @@ defmodule ExVideo.Endpoint do
   plug Plug.Session,
     store: :cookie,
     key: "_ex_video_key",
-    signing_salt: "jxg0bI5e"
+    signing_salt: "03BzylEZ"
 
   plug ExVideo.Router
 end
