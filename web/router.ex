@@ -18,6 +18,7 @@ defmodule ExVideo.Router do
 
     get "/", PageController, :index
     resources "/videos", VideoController
+    resources "/categories", CategoryController
   end
 
   # Other scopes may use custom stacks.

@@ -1,8 +1,41 @@
 defmodule ExVideo.VideoController do
   use ExVideo.Web, :controller
+  alias ExVideo.Video
+
+  plug :scrub_params, "video" when action in [:create, :update]
 
   def index(conn, _params) do
-    render conn, "index.html"
+    videos = Repo.all(Video)
+    render(conn, "index.html", videos: videos)
+  end
+
+  def new(conn, _params) do
+    changeset = Video.changeset(%Video{})
+    render(conn, "new.html", changeset: changeset)
+  end
+
+  def create(conn, %{"video" => video_params}) do
+    changeset = Video.changeset(%Video{}, video_params)
+
+    case Repo.insert(changeset) do
+      {:ok, _video} ->
+        conn
+        |> put_flash(:info, "Video created successfully.")
+        |> redirect(to: video_path(conn, :index))
+      {:error, changeset} ->
+        render(conn, "new.html", changeset: changeset)
+    end
+  end
+
+  def delete(conn, %{"id" => id}) do
+    video = Repo.get!(Video, id)
+
+    Repo.delete!(video)
+
+    conn
+    |> put_flash(:info, "Video has been removed")
+    |> redirect(to: video_path(conn, :index))
+
   end
 
 end
