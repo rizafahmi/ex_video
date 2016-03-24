@@ -4,7 +4,6 @@ defmodule ExVideo.Category do
   schema "categories" do
     field :name, :string
 
-    has_many :video, ExVideo.Video
     timestamps
   end
 
@@ -21,4 +20,5 @@ defmodule ExVideo.Category do
     model
     |> cast(params, @required_fields, @optional_fields)
   end
+
 end

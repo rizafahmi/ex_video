@@ -357,6 +357,13 @@ See the browser and see it’s all showed up! Let’s create a new one. Working 
 
 Just try and it just worked! We delete something… 
 
+**TODO: Show Page**
+
+
+
+
+
+
 **TODO: Editing Video**
 
 ## Add Categories to the Videos
@@ -405,9 +412,51 @@ This code means that we want the database to enforce a constraint between videos
 
 `mix ecto.migrate`
 
-If we see it in the database, now the videos table has `category_id`.
+If we see it in the database, now the videos table has `category_id`. Let’s associate video and category.
+
+## Associating Videos and Categories
+Let’s query the categories for the videos first in video controller.
+
+```elixir
+# …
+  alias ExVideo.Category
+# …
+  def new(conn, _params) do
+    changeset = Video.changeset(%Video{})
+    query = from c in Category, order_by: c.name # add this line
+    query = from c in query, select: {c.name, c.id} # add this line
+    categories = Repo.all query
+    render(conn, “new.html”, changeset: changeset, categories: categories) # update this line
+  end
+
+```
 
 
+Then we add it in new video template as a select component.
+
+```
+  <div class=“form-group”>
+    <%= label f, :category_id, “Category”, class: “control-label” %>
+    <%= select f, :category_id, @categories, class: “form-control”, prompt: “Choose a category” %>
+  </div>
+```
+
+Make sense? Let’s try add new video with category. And… Pretty cool, right?! And if we see in the database, field `category_id` is filled. We need also show it on the index page, right? Well, that’s easy. Change the query in controller.
+
+```elixir
+  def index(conn, _params) do
+    videos = Repo.all from v in Video,
+      join: c in assoc(v, :category),
+      preload: [:category]
+    render(conn, “index.html”, videos: videos)
+  end
+```
+
+Then print it on the template.
+
+```
+      <td><%= video.category.name %></td>
+```
 
 
 
