@@ -382,7 +382,7 @@ Back to our videos, how we add categories to videos? First, we need to modify ou
   end
 
   @required_fields ~w(url title)
-  @optional_fields ~w(description, category_id) # add this line
+  @optional_fields ~w(description category_id) # add this line
 ```
 
 We define `belongs_to` and add the category id into optional fields.
@@ -405,7 +405,7 @@ This code means that we want the database to enforce a constraint between videos
 
 `mix ecto.migrate`
 
-If we see it in the database, now the videos table has category_id.
+If we see it in the database, now the videos table has `category_id`.
 
 
 

@@ -4,6 +4,7 @@ defmodule ExVideo.Category do
   schema "categories" do
     field :name, :string
 
+    has_many :video, ExVideo.Video
     timestamps
   end
 

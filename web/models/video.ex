@@ -11,10 +11,11 @@ defmodule ExVideo.Video do
   end
 
   @required_fields ~w(url title)
-  @optional_fields ~w(description, category_id)
+  @optional_fields ~w(description category_id)
 
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    # |> assoc_constraint(:category)
   end
 end
