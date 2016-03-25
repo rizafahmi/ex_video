@@ -452,11 +452,13 @@ Make sense? Let’s try add new video with category. And… Pretty cool, right?!
   end
 ```
 
-Then print it on the template.
+Then finally print it on the template.
 
 ```
       <td><%= video.category.name %></td>
 ```
+
+Yup, that’s all I got. There is so much more to cover: ecto, channel. You have to invite me over again next month, I’m afraid :)
 
 
 
