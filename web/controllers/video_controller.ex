@@ -44,4 +44,10 @@ defmodule ExVideo.VideoController do
 
   end
 
+  def show(conn, %{"id" => id}) do
+    video = Repo.get!(Video, id)
+
+    render(conn, "show.html", video: video)
+  end
+
 end

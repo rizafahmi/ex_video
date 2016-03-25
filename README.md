@@ -253,16 +253,26 @@ defmodule ExVideo.VideoController do
   use ExVideo.Web, :controller
   alias ExVideo.Video
 
-  plug :scrub_params, “video” when action in [:create, :update] #add this line
+  plug :scrub_params, “video” when action in [:create] #add this line
 
 #…
 
 end
 ```
 
-We just do in `create` and `update` for later. Now if we submit empty form, we will get error messages. Let’s fix the error and resubmit. Ok, we submit and see em in the database.
+We just do in `create` at this moment. Now if we submit empty form, we will get error messages. Let’s fix the error and resubmit. Ok, we submit and see em in the database.
 
-Cool! We added a new video. Now our video index page is kinda useless. Let’s modify the page so we can see videos that submitted by users.
+```text
+url: https://www.youtube.com/watch?v=X25xOhntr6s
+title: Keynote: Elixir Should Take Over the World
+description: Awesome talk from Jessica Kerr
+
+url: https://youtu.be/STO-uN0xHDQ
+title: Phoenix - Productive. Reliable. Fast.
+description: 
+```
+
+Cool! We added new videos. Now our video index page is kinda useless. Let’s modify the page so we can see videos that submitted by users.
 
 ```html
 <h2>Listing videos</h2>
@@ -334,11 +344,44 @@ Just try and it just worked! We delete something…
 
 Ok, now we will create show or detail page. You know the drill, first we add action or function in controller, then the template.
 
+```elixir
+  def show(conn, %{“id” => id}) do
+    video = Repo.get!(Video, id)
 
+    render(conn, “show.html”, video: video)
+  end
+```
 
+In my opinion, Phoenix error message is pretty good. Almost like doing TDD, right?! It instructing us to complete something.
+If you open browser, it will complain there was no show html template. Which our next step.
 
+```
+<h2>Show video</h2>
 
+<ul>
 
+  <li>
+    <strong>Url:</strong>
+    <%= @video.url %>
+  </li>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @video.title %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @video.description %>
+  </li>
+
+</ul>
+
+<%= link “Edit”, to: video_path(@conn, :edit, @video) %>
+<%= link “Back”, to: video_path(@conn, :index) %>
+```
+
+Now, if we click “show” button we can see the detail information of the video.
 
 
 **TODO: Editing Video**
