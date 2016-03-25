@@ -68,43 +68,9 @@ There is the quote about Skynet:
 Shall we continue, or you want me to kill everything like Terminator? :)
 
 
-**TAKE ONE**
-
-Now we will create our first feature of the app called Video. We will use the generator that Phoenix provide for us.
-
-`mix phoenix.gen.html Video videos url:string title:string description:text`
-
-Ok, Video here, with capital V is module name, and videos is table name inside database. Then we define url and title with type string and description with type text. This command will create controller, templates, view, model, testing files and migration script. And we need to add something to our router, as instructed. Open up `web/router.ex` and add this line.
-
-```elixir
-  scope “/“, ExVideo do
-    pipe_through :browser # Use the default browser stack
-
-    resources “/videos”, VideoController # add this line
-    get “/“, PageController, :index
-  end
-```
-
-We then can run `mix phoenix.routes` to see what `resources` add to our routes. Basicly everything we need.
-
-We also need to run the migration. The migration file created automatically by Phoenix. Let see the file first before we run the migration. Open up `priv/repo/migrations/*.exs` script and see what happen. We create table named `videos` with url, title and description as the fields.
-
-Now we run the migration with this command:
-
-`mix ecto.migrate`
-
-Now if we re-run the server, we now have CRUD video feature!
-
-Let’s try to add, edit and delete.
-
-Pretty cool, right?! I’m done :)
-
-No, no… I’m far from done. Now let’s create an index page to listing all the videos that user submitted. To do that, let’s remove the boilerplate code in 
-
-
-**TAKE TWO**
-
 ## Video Feature
+
+### Index Page
 Ok now we’re ready to create our first module or feature which is Video. To do that we have two options: using generator or manually. The easy way or the hard way. 
 
 And because we’re learning, let’s do the hard way first. Let’s create the routes first. Open up `web/router.ex` and add this line.
@@ -146,6 +112,8 @@ end
 
 Refresh the browser and see what happen. Yay! We got another complain. There was no `index.html` in video template. So we just have to create one. First we have to create `templates/video` directory and create the `index.html.eex` file inside that. and finally it stop complaining :)
 
+### New Video Page
+
 Now we want to add a new video link. We add `new` function in the video controller.
 
 ```elixir
@@ -168,8 +136,8 @@ defmodule ExVideo.Video do
     timestamps
   end
 
-  @required_fields ~w(url title description)
-  @optional_field ~w()
+  @required_fields ~w(url title)
+  @optional_field ~w(description)
 
   def changeset(model, params \\ :empty) do
     model
@@ -339,7 +307,12 @@ The interesting part was in `<%= for video <- @videos do %>` line. We do iterate
 
 ```
 
-See the browser and see it’s all showed up! Let’s create a new one. Working well so far. What should we do next? Let’s do delete. Open the video controller and add delete action.
+See the browser and see it’s all showed up! Let’s create a new one. Working well so far. 
+
+
+### Delete Video Page
+
+What should we do next? Let’s do delete. Open the video controller and add delete action.
 
 ```elixir
   def delete(conn, %{“id” => id}) do
@@ -357,7 +330,11 @@ See the browser and see it’s all showed up! Let’s create a new one. Working 
 
 Just try and it just worked! We delete something… 
 
-**TODO: Show Page**
+### Detail Video Page
+
+Ok, now we will create show or detail page. You know the drill, first we add action or function in controller, then the template.
+
+
 
 
 
@@ -418,9 +395,9 @@ If we see it in the database, now the videos table has `category_id`. Let’s as
 Let’s query the categories for the videos first in video controller.
 
 ```elixir
-# …
+#…
   alias ExVideo.Category
-# …
+#…
   def new(conn, _params) do
     changeset = Video.changeset(%Video{})
     query = from c in Category, order_by: c.name # add this line
