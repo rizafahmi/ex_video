@@ -14,8 +14,6 @@
 
 ## Create Phoenix Project
 
-We will build portal for Elixir-related video. Similar to pyvideo if you know what it is. So in the app we can submit Elixir videos, and we can also see the list of videos, maybe we can see featured videos, most popular and such thing. You with me? Ok cool, let’s do it!
-
 First, we need to create a new phoenix project. To do that, just run:
 
 `mix phoenix.new ex_video`
@@ -28,7 +26,7 @@ Let’s run our first phoenix app. But first, let’s create a database by runni
 
 `mix ecto.create`
 
-It will compile our app the will create database, if our daabase setting is correct.
+It will compile our app the will create database, if our database setting is correct.
 
 ```text
 …
@@ -51,7 +49,7 @@ The interesting part is if we run some benchmark on this barebone phoenix app li
 
 And we monitor the CPU, all 4 of my core getting exposed! How cool is that? No other frameworks that I worked before doing this kind of optimization by default. In other word, we have to do nothing to optimize this framework.
 
-Ok, let’s see one more cool tools provided by Erlang, called observer. But first we need to shut down the phoenix server and run within iex. IEx is Elixir REPL and we can run mix task inside it so we can do awesome thing there.
+Ok, let’s see one more cool tools provided by Erlang, called observer. But first we need to shut down the phoenix server and run within iex. IEx is Elixir REPL and we can run mix task inside it so we can do debug thing there.
 
 `iex -S mix phoenix.server`
 
@@ -62,10 +60,7 @@ With this tools you can monitor the memory usage, applications, processes and ot
 
 What interesting is in Application tab. Let say we have one bad request that takes too long, query too much then the database pool died. Then what happen? When one process died, it will replaced by new one, thanks to Supervisor and OTP. But this OTP topic for another meetup. You can sponsor me again next month to talk about this :) Let’s emulate this scenario. It’s dead, then comes up live again with new processes, as you can see the new processes id. Sure, the client will need to reconnect with the database pool. But the system is still up and our system can normally run again in no time.
 
-There is the quote about Skynet:
-“If you have to build skynet, killer artificial intelligent from Terminator movies, I would use Erlang and Erlang VM. Mostly because it’s unkillable and keep coming back!” Simon St.Laurent from MostlyErlang Podcast
-
-Shall we continue, or you want me to kill everything like Terminator? :)
+Shall we continue, or you want me to kill this Terminator processes? :)
 
 
 ## Video Feature
