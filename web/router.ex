@@ -17,7 +17,11 @@ defmodule ExVideo.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    resources "/videos", VideoController
+    get "/videos", VideoController, :index
+    get "/videos/new", VideoController, :new
+    get "/videos/:id", VideoController, :show
+    get "/videos/:id/edit", VideoController, :edit
+    delete "/videos/:id", VideoController, :delete
     resources "/categories", CategoryController
   end
 

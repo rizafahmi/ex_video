@@ -74,14 +74,13 @@ And because we’re learning, let’s do the hard way first. Let’s create the 
   scope “/“, ExVideo do
     pipe_through :browser # Use the default browser stack
 
-    resources “/videos”, VideoController # add this line
+    get “/videos”, VideoController, :index
+ # add this line
     get “/“, PageController, :index
   end
 ```
 
-We then can run `mix phoenix.routes` to see what `resources` add to our routes. Basicly everything we need. We can always do one by one, but if we want to create CRUD app, just use resources. Saves a lot of our precious time. 
-
-To see the changes, we can run `mix phoenix.routes` to see what `resources` add to our routes. And now, if we open `http://localhost:4000/videos` of course it will complaint, because we haven’t create the controller yet. Let’s do it now. Create a new controller in `web/controller/video_controller.ex`
+We just add one routes for our video index page. And now, if we open `http://localhost:4000/videos` of course it will complaint, because we haven’t create the controller yet. Let’s do it now. Create a new controller in `web/controller/video_controller.ex`
 
 ```elixir
 defmodule ExVideo.VideoController do
