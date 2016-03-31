@@ -19,6 +19,7 @@ defmodule ExVideo.Router do
     get "/", PageController, :index
     get "/videos", VideoController, :index
     get "/videos/new", VideoController, :new
+    post "/videos/new", VideoController, :create
     get "/videos/:id", VideoController, :show
     get "/videos/:id/edit", VideoController, :edit
     delete "/videos/:id", VideoController, :delete

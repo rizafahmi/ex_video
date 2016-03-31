@@ -1,9 +1,5 @@
 # Phoenix Workshop
 
-## Make sure Elixir installed
-
-`elixir -v`
-
 ## Install Phoenix
 
 `mix archive.install https://github.com/phoenixframework/archives/raw/master/phoenix_new.ez`
@@ -22,7 +18,7 @@ It will creating bunch of stuff and will installing some nodejs packages since P
 
 ## Run Our First Phoenix App
 
-Let’s run our first phoenix app. But first, let’s create a database by running this command
+After the installation complete, let’s try it. But first, let’s create a database by running this command
 
 `mix ecto.create`
 
@@ -45,7 +41,9 @@ then open our browser, viola. Our app up and running!
 
 The interesting part is if we run some benchmark on this barebone phoenix app like this:
 
-`wrk -t4 -c100 -d30S —timeout 2000 “http://127.0.0.1:4000”`
+[open CPU activity monitor first]
+
+`wrk -t4 -c100 -d30S --timeout 2000 "http://127.0.0.1:4000"`
 
 And we monitor the CPU, all 4 of my core getting exposed! How cool is that? No other frameworks that I worked before doing this kind of optimization by default. In other word, we have to do nothing to optimize this framework.
 
@@ -65,8 +63,10 @@ Shall we continue, or you want me to kill this Terminator processes? :)
 
 ## Video Feature
 
+Let's start build this app.
+
 ### Index Page
-Ok now we’re ready to create our first module or feature which is Video. To do that we have two options: using generator or manually. The easy way or the hard way. 
+We’re ready to create our first module or feature which is Video. To do that we have two options: using generator or manually. The easy way or the hard way. 
 
 And because we’re learning, let’s do the hard way first. Let’s create the routes first. Open up `web/router.ex` and add this line.
 
@@ -80,7 +80,7 @@ And because we’re learning, let’s do the hard way first. Let’s create the 
   end
 ```
 
-We just add one routes for our video index page. And now, if we open `http://localhost:4000/videos` of course it will complaint, because we haven’t create the controller yet. Let’s do it now. Create a new controller in `web/controller/video_controller.ex`
+We just add one routes for our video index page. And now, if we open `http://localhost:4000/videos` of course it will complain, because we haven’t create the controller yet. Let’s do it now. Create a new controller in `web/controller/video_controller.ex`
 
 ```elixir
 defmodule ExVideo.VideoController do
@@ -108,7 +108,16 @@ Refresh the browser and see what happen. Yay! We got another complain. There was
 
 ### New Video Page
 
-Now we want to add a new video link. We add `new` function in the video controller.
+Now we want to add a new video link. We add `new` function in the video controller. But before that, let’s add the routes we need in order to add new video.
+
+```elixir
+    get “/videos/new”, VideoController, :new
+    post “/videos/new”, VideoController, :create
+
+```
+
+We did add two routes, one for form display, the other one for submitting a form. Pretty straight forward, right?! Now, let’s add new action in the controller.
+
 
 ```elixir
   def new(conn, _params) do
@@ -142,12 +151,8 @@ end
 
 What is `~w`?
 
-Now we create the database with `mix ecto.create` command.
 
-`The database for ExVideo.Repo has been created.`
-
-
-After we create the database, we also need to create the table. To do that we use migration like this:
+We also need to create the table in the database. To do that we use migration like this:
 
 `mix ecto.gen.migration create_video_table`
 
@@ -177,7 +182,10 @@ After we all done with model, database and table, now we just need to connect be
 
 ```
 
-With this, `changeset` will available on the template, now we can use form helper. Let’s do it by opening `web/templates/new.html.eex`
+With this, `changeset` will available on the template, now we can use form helper. Let me explain a little bit about this `changeset`. Ecto has a feature called changesets that holds all changes you want to perform on the database. It encapsulates the whole process of receiving external data, casting and validating it before writing it to the database. So the interaction with the database is very minimal, which is good for the performance. We make sure everything right such as casting and validating before we write to the database.
+
+
+With the model are in place, we now can use changesets in our template to use form helper provided by Phoenix. Opening up `web/templates/new.html.eex`
 
 ```elixir
 <%= form_for @changeset, video_path(@conn, :create), fn f -> %>
@@ -346,8 +354,8 @@ Ok, now we will create show or detail page. You know the drill, first we add act
   end
 ```
 
-In my opinion, Phoenix error message is pretty good. Almost like doing TDD, right?! It instructing us to complete something.
-If you open browser, it will complain there was no show html template. Which our next step.
+As we speak earlier, Phoenix error pages is pretty damn good. Almost like doing TDD, right?! It instructing us to complete something.
+Now if you open browser, it will complain there was no show html template. Which our next step.
 
 ```
 <h2>Show video</h2>
