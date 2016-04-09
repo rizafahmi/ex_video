@@ -10,7 +10,7 @@ defmodule ExVideo do
       # Start the endpoint when the application starts
       supervisor(ExVideo.Endpoint, []),
       # Start the Ecto repository
-      supervisor(ExVideo.Repo, []),
+      # supervisor(ExVideo.Repo, []),
       # Here you could define other workers and supervisors as children
       # worker(ExVideo.Worker, [arg1, arg2, arg3]),
     ]
